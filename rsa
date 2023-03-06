@@ -1,59 +1,46 @@
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-/**
- * read_textfile- read and sent to stdout a number of charss.
- *
- *@filename: name of file
- *@letters: number of letters
- * Return: Number of printed chars.
- */
-int main(int ac, char **av)
-{
-	int i, j, flag, fd, h;
-	int leido = 0;
-	long int number, number2, k;
-	char *buf, *buf2;
-	int letters = 100;
+#!/usr/bin/python3
+""" Class factor_file """
+from sys import argv
+from math import sqrt
 
-	leido = leido;
-	ac = ac;
-	number = 0;
-	fd = open(av[1], O_RDONLY);
-	buf = malloc(1000 * sizeof(char));
-	buf2 = malloc(120 * sizeof(char));
-	leido = read(fd, buf, letters);
- 	i = 0;
-	while (buf[i] != 0)
-	{
-		j = 0;
-		for (h = 0; h <= 100; h++)
-			buf2[h] = 0;
-		while (buf[i] != 10)
-			 {
-				 buf2[j] = buf[i];
-				 i++;
-				 j++;
-			 }
-		number = atol(buf2);
-		flag = 0;
-		for (k = 2; k < number /2 && flag == 0; k++)
-		{
-			if (number % k == 0)
-				flag = 1;
-		}
-		number2 = number / (k - 1);
-		printf("%li=%li*%li\n", number, number2, k - 1);
-		i++;
-	}
-	free(buf);
-	free(buf2);
-	close(fd);
-	return(0);
-}
 
+class factor_file:
+    """ init """
+    def __init__(self, filename):
+        """check if
+        file is not NULL
+        """
+        if filename is not None:
+            self.filename = filename
+
+    def open_read_file(self):
+        """read from file
+        add to array
+        """
+        with open(self.filename, encoding="utf-8") as file:
+            lines = file.readlines()
+        number_to_factor = []
+        for line in lines:
+            number_to_factor.append(int(line))
+        return number_to_factor
+
+    def factorial(self, n):
+        """factor each
+        n given
+        """
+        for i in range(2, n):
+            if n == ((n // i) * i):
+                print("{}={}*{}".format(n, (n // i), i))
+                break
+
+    def factor_each_n_in_lis(self):
+        """factor each
+        num in ls
+        """
+        ls = self.open_read_file()
+        for n in ls:
+            self.factorial(n)
+
+
+for i in range(1, len(argv)):
+    factor_file(argv[i]).factor_each_n_in_lis()
